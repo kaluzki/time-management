@@ -19,5 +19,7 @@ echo <<<HTML
         </form>
     </section>
 </body>
-$input
 HTML;
+if (preg_match("/Eier/", $input)) {
+    echo "$input";
+}
