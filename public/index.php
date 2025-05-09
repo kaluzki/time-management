@@ -2,6 +2,10 @@
 
 $input = htmlspecialchars($_REQUEST['data'] ?? "");
 
+$s = function (string $str, int $amount): string {
+    return $str . (abs($amount) !== 1 ? 's' : '');
+};
+
 echo <<<HTML
 <!doctype html>
 <html lang = "en">
@@ -16,11 +20,10 @@ echo <<<HTML
             <form method="post">
                 <label for="data">Time input</label>
                 <br>
-                <textarea name="data" cols="35" rows="30" placeholder="Paste your time table here..."></textarea>
-                <button type="submit" value="submit">Submit text</button>
+                <textarea name="data" cols="35" rows="30" placeholder="Paste your time table here...">$input</textarea>
+                <button type="submit" value="submit">Upload</button>
             </form>
         </section>
-    
 HTML;
 
 $time = 0;
@@ -33,22 +36,26 @@ foreach ($input as $line) {
     preg_match("/(2[0-3]|[01]?[0-9]):[0-5][0-9]-(2[0-3]|[01]?[0-9]):[0-5][0-9]/", $line, $matches);
     if ($matches) {
         [$startTimeStr, $endTimeStr] = explode('-', $matches[0]);
-
         $startTime = DateTime::createFromFormat('H:i', $startTimeStr);
         $endTime = DateTime::createFromFormat('H:i', $endTimeStr);
         $interval = $startTime->diff($endTime);
         $minutes = ($interval->h * 60) + $interval->i;
-
         $time += $minutes;
+
+        echo <<< HTML
+        <p>
+            $line - $interval->h {$s('hour', $interval->h)} and $interval->i {$s('minute', $interval->i)}
+        </p>
+        HTML;
     }
 }
 $hours = intval($time / 60);
 $remMinutes = $time % 60;
+
 echo <<< HTML
         <p>
-            You have worked for $hours hours and $remMinutes minutes.
+            You have worked for $hours {$s('hour', $hours)} and $remMinutes {$s('minute', $remMinutes)}.
         </p>
     </body>
 </html>
 HTML;
-
