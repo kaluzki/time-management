@@ -1,0 +1,14 @@
+{
+    "name": "kaluzki/time-management",
+    "type": "project",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Gleb Kaluzki"
+        }
+    ],
+    "require": {
+        "php": ">=8.3",
+        "symfony/console": "^7.2"
+    }
+}
