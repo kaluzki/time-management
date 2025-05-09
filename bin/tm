@@ -1,4 +1,6 @@
 #!/usr/bin/env php
 <?php
+require_once __DIR__ . "/../vendor/autoload.php";
 
-echo "OK\n";
+$application = new \Symfony\Component\Console\Application("time management", "0.0.1");
+$application->run();
